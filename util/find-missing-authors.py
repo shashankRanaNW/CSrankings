@@ -5,7 +5,7 @@ from lxml import etree as ElementTree
 def parseDBLP():
     authors = {}
 
-    with open("dblp.xml", mode="r") as f:
+    with open("/home/shashankr/CSrankings/dblp2.xml", mode="rb") as f:
         # was: with gzip.open('dblp.xml.gz') as f:
 
         oldnode = None
@@ -13,7 +13,7 @@ def parseDBLP():
         foundArticle = False
         authorName = ""
 
-        for (event, node) in ElementTree.iterparse(f, events=["start", "end"]):
+        for (_, node) in ElementTree.iterparse(f, events=["start", "end"]):
 
             if oldnode is not None:
                 oldnode.clear()
@@ -54,16 +54,19 @@ def csv2dict_str_str(fname):
         # for rows in reader:
         #    print rows[0], "-->", rows[1]
         d = {
-            unicode(rows[0].strip(), "utf-8"): unicode(rows[1].strip(), "utf-8")
+            str(rows[0].strip()) : str( rows[1].strip() )
             for rows in reader
         }
     return d
 
 
-facultydict = csv2dict_str_str("faculty-affiliations.csv")
+facultydict = csv2dict_str_str("/home/shashankr/CSrankings/csrankings.csv")
 
 authors = parseDBLP()
 
-for name in facultydict:
-    if name not in authors:
-        print(name.encode("utf-8"))
+# for name in facultydict:
+#     if name not in authors:
+#         print(name.encode("utf-8"))
+
+# print "Total faculty: ", len(facultydict)
+print( len(parseDBLP() ) )
